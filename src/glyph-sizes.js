@@ -37,15 +37,25 @@ class GlyphSizes {
             .then(data => {
                 var byteArray = new Uint8Array(data);
 
+                // Push the raw bytes directly into an array.
+
                 this.rawWidths = byteArray;
+
+                // Now cycle through all the bytes and separate them by width.
+
                 this.widths = [];
 
                 for (let i = 0, j = byteArray.length; i < j; i++) {
+
+                    // Create a new array to avoid annoying errors.
 
                     if (!Array.isArray(this.widths[byteArray[i]])) {
 
                         this.widths[byteArray[i]] = [];
                     }
+
+                    // Equivalent to: this.widths[width].push(charCode)
+                    // Array structure becomes: [1 => [1234, 4567, 8901, ...], 2 => [1479, 3680, 2638, ...], ...]
 
                     this.widths[byteArray[i]].push(i);
                 }
