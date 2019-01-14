@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <!-- The container for glyph widths. Will be needed for all utils. -->
+    <script src="glyph-sizes.js"></script>
+    <!-- The tool for obfuscating text. -->
+    <script src="obfuscate.js"></script>
+</head>
+<body>
+
+    <h1>Obfuscate</h1>
+    
+    <input type="text" class="obfuscate">
+    <button class="obfuscate-once">Click to obfuscate once.</button>
+    <button class="obfuscate-clock">Click to obfscuate constantly.</button>
+
+    <div class="obfuscate-result"></div>
+
+    <script>
+
+        // Instantiate GlyphSizes, which populates the list of widths.
+
+        const sizes = new GlyphSizes('widths.bin');
+
+        // Insantiate Obfuscate, which requires GlyphSizes.
+
+        const obfuscate = new Obfuscate(sizes);
+
+        // Extra vars
+
+        const obfuscateInput = document.querySelector('.obfuscate');
+        const obfuscateResult = document.querySelector('.obfuscate-result');
+
+        // Run once.
+
+        document.querySelector('.obfuscate-once').addEventListener('click', (ev) => {
+
+            obfuscateResult.innerHTML = obfuscate.obfuscate(obfuscateInput.value);
+
+            ev.preventDefault();
+        });
+
+        // Run a clock.
+
+        let running = false;
+        let inst;
+
+        document.querySelector('.obfuscate-clock').addEventListener('click', (ev) => {
+
+            if (running) {
+
+                clearInterval(inst)
+            } else {
+
+                inst = setInterval(obf, 20);
+            }
+
+            function obf() {
+                
+                obfuscateResult.innerHTML = obfuscate.obfuscate(obfuscateInput.value);
+            }
+
+            running = !running;
+
+            ev.preventDefault();
+        });
+    </script>
+</body>
+</html>
